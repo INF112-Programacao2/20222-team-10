@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Jogador.h"
 #include "Inimigo.h"
+#include "Espada.h"
 #include "Controlador.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
@@ -8,8 +9,8 @@
 #include <allegro5/allegro_image.h>
 
 // VARIÁVEIS GLOBAIS
-const int LARGURA_TELA = 1280;
-const int ALTURA_TELA = 720;
+const int LARGURA_TELA = 500;
+const int ALTURA_TELA = 500;
 const int FPS = 60;
 
 enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, A, S, D};
@@ -26,7 +27,12 @@ int main(){
     bool desenha = true;
 
     
-    Jogador jogador(100, 2, 2, 100, 100);
+    Jogador jogador(100, 2, 2, 100, 100, 15);
+    Espada espada(5, 30);
+    Inimigo *inimigos;
+    Inimigo inimigo1(100, 1, 1, LARGURA_TELA/2, ALTURA_TELA/2, 50);
+
+    inimigos[1] = inimigo1;
 
     // INICIALIZAÇÃO ALLEGRO E DISPLAY
     ALLEGRO_DISPLAY *display = nullptr;
@@ -72,28 +78,39 @@ int main(){
                 break;
             case ALLEGRO_KEY_UP:
                 teclas[CIMA] = true;
-                ultima_posicao = CIMA;
+                if(!teclas[BAIXO]){
+                    ultima_posicao = CIMA;
+                }
                 break;
             case ALLEGRO_KEY_DOWN:
                 teclas[BAIXO] = true;
-                ultima_posicao = BAIXO;
+                if(!teclas[CIMA]){
+                    ultima_posicao = BAIXO;
+                }
                 break;
             case ALLEGRO_KEY_LEFT:
                 teclas[ESQUERDA] = true;
-                ultima_posicao = ESQUERDA;
+                if(!teclas[DIREITA]){
+                    ultima_posicao = ESQUERDA;
+                }
                 break;
             case ALLEGRO_KEY_RIGHT:
                 teclas[DIREITA] = true;
-                ultima_posicao = DIREITA;
+                if(!teclas[ESQUERDA]){
+                    ultima_posicao = DIREITA;
+                }
                 break;
             case ALLEGRO_KEY_A:
                 teclas[A] = true;
+                espada.setAtivo(true);
                 break;
             case ALLEGRO_KEY_S:
                 teclas[S] = true;
+                espada.setAtivo(true);
                 break;
             case ALLEGRO_KEY_D:
                 teclas[D] = true;
+                espada.setAtivo(true);
                 break;
             }
         }
@@ -135,27 +152,38 @@ int main(){
             // 15 é a "largura" do quadrado
             if(teclas[CIMA]){
                 jogador.movimentaCima();
-                if(jogador.getPosY() < 15){
-                    jogador.setPosY(15);
+                if(jogador.getPosY() < jogador.getBordaY()){
+                    jogador.setPosY(jogador.getBordaY());
                 }
+                espada.setPosX(jogador.getPosX());
+                espada.setPosY(jogador.getPosY() - jogador.getBordaY());
             }
             if(teclas[BAIXO]){
                 jogador.movimentaBaixo();
-                if(jogador.getPosY() > ALTURA_TELA - 15){
-                    jogador.setPosY(ALTURA_TELA - 15);
+                if(jogador.getPosY() > ALTURA_TELA - jogador.getBordaY()){
+                    jogador.setPosY(ALTURA_TELA - jogador.getBordaY());
                 }
+                espada.setPosX(jogador.getPosX());
+                espada.setPosY(jogador.getPosY() + jogador.getBordaY());
             }
             if(teclas[ESQUERDA]){
                 jogador.movimentaEsquerda();
-                if(jogador.getPosX() < 15){
-                    jogador.setPosX(15);
+                if(jogador.getPosX() < jogador.getBordaX()){
+                    jogador.setPosX(jogador.getBordaX());
                 }
+                espada.setPosY(jogador.getPosY());
+                espada.setPosX(jogador.getPosX() - jogador.getBordaX());
             }
             if(teclas[DIREITA]){
                 jogador.movimentaDireita();
-                if(jogador.getPosX() > LARGURA_TELA - 15){
-                    jogador.setPosX(LARGURA_TELA - 15);
+                if(jogador.getPosX() > LARGURA_TELA - jogador.getBordaX()){
+                    jogador.setPosX(LARGURA_TELA - jogador.getBordaX());
                 }
+                espada.setPosY(jogador.getPosY());
+                espada.setPosX(jogador.getPosX() + jogador.getBordaX());
+            }
+            if(espada.getAtivo()){
+                espada.colisaoEspada(inimigos[1], jogador, ultima_posicao);
             }
         }
 
@@ -163,24 +191,28 @@ int main(){
         if(desenha && al_is_event_queue_empty(fila_eventos)){
             desenha = false;
 
-            al_draw_filled_rectangle(jogador.getPosX()-15, jogador.getPosY()-15, jogador.getPosX()+15, jogador.getPosY()+15, al_map_rgb(0, 128, 0));
+            al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
+
+            al_draw_filled_rectangle(inimigo1.getPosX()-inimigo1.getBordaX(), inimigo1.getPosY()-inimigo1.getBordaY(), inimigo1.getPosX()+inimigo1.getBordaX(), inimigo1.getPosY()+inimigo1.getBordaY(), al_map_rgb(0, 0, 128));
 
             // DESENHANDO ESPADA
-            if(teclas[A]){
+            if(espada.getAtivo()){
                 switch(ultima_posicao){
                 case CIMA:
-                    al_draw_filled_rectangle(jogador.getPosX()-5, jogador.getPosY()-16, jogador.getPosX()+5, jogador.getPosY()-46, al_map_rgb(128, 0, 0));
+                    al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()-espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
                     break;
                 case BAIXO:
-                    al_draw_filled_rectangle(jogador.getPosX()-5, jogador.getPosY()+16, jogador.getPosX()+5, jogador.getPosY()+46, al_map_rgb(128, 0, 0));
+                    al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()+espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
                     break;
                 case ESQUERDA:
-                    al_draw_filled_rectangle(jogador.getPosX()-16, jogador.getPosY()+5, jogador.getPosX()-46, jogador.getPosY()-5, al_map_rgb(128, 0, 0));
+                    al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()-espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
                     break;
                 case DIREITA:
-                    al_draw_filled_rectangle(jogador.getPosX()+16, jogador.getPosY()+5, jogador.getPosX()+46, jogador.getPosY()-5, al_map_rgb(128, 0, 0));
+                    al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()+espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
                     break;
                 }
+
+                espada.setAtivo(false);
             }
 
             al_flip_display();

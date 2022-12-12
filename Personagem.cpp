@@ -1,30 +1,16 @@
 #include "Personagem.h"
 
-Personagem::Personagem(int vida, int ataque, int defesa, int pos_x, int pos_y){
+Personagem::Personagem(int vida, int ataque, int defesa, int pos_x, int pos_y, int borda){
     _vida = vida;
     _ataque = ataque;
     _defesa = defesa;
     _pos_x = pos_x;
     _pos_y = pos_y;
+    _borda_x = borda;
+    _borda_y = borda;
 }
 
 Personagem::~Personagem(){}
-
-void Personagem::movimentaCima(){
-    this->setPosY(this->getPosY() - getVelocidade());
-}
-
-void Personagem::movimentaBaixo(){
-    this->setPosY(this->getPosY() + getVelocidade());
-}
-
-void Personagem::movimentaEsquerda(){
-    this->setPosX(this->getPosX() - getVelocidade());
-}
-
-void Personagem::movimentaDireita(){
-    this->setPosX(this->getPosX() + getVelocidade());
-}
 
 int Personagem::getAtaque(){
     return _ataque;
@@ -46,8 +32,24 @@ int Personagem::getPosY(){
     return _pos_y;
 }
 
-int Personagem::getVelocidade(){
-    return _velocidade;
+int Personagem::getBordaX(){
+    return _borda_x;
+}
+
+int Personagem::getBordaY(){
+    return _borda_y;
+}
+
+void Personagem::setVida(int newVida){
+    _vida = newVida;
+}
+
+void Personagem::setAtaque(int newAtaque){
+    _ataque = newAtaque;
+}
+
+void Personagem::setDefesa(int newDefesa){
+    _defesa = newDefesa;
 }
 
 void Personagem::setPosX(int newX){

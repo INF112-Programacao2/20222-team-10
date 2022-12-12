@@ -8,7 +8,7 @@ protected:
     int _ataque;
     int _defesa;
 
-    int const _velocidade = 7;
+    //
     int _pos_x;
     int _pos_y;
     int _borda_x;
@@ -16,7 +16,7 @@ protected:
 
 public:
     // CRIADOR E DESTRUTOR
-    Personagem(int vida, int ataque, int defesa, int pos_x, int pos_y);
+    Personagem(int vida, int ataque, int defesa, int pos_x, int pos_y, int borda);
     ~Personagem();
 
     // GETTERS E SETTERS
@@ -24,9 +24,14 @@ public:
     int getAtaque();
     int getDefesa();
 
-    int getVelocidade();
     int getPosX();
     int getPosY();
+    int getBordaX();
+    int getBordaY();
+
+    void setVida(int newVida);
+    void setAtaque(int newAtaque);
+    void setDefesa(int newDefesa);
 
     void setPosX(int newX);
     void setPosY(int newY);
@@ -35,11 +40,6 @@ public:
     void virtual ataqueNormal() = 0;
     void virtual ataqueForte() = 0;
     void virtual defender() = 0;
-
-    void movimentaCima();
-    void movimentaBaixo();
-    void movimentaEsquerda();
-    void movimentaDireita();
 };
 
 #endif
