@@ -1,6 +1,6 @@
 #include "Inimigo.h"
 
-Inimigo::Inimigo(int vida, int ataque, int defesa, int pos_x, int pos_y): Personagem(vida, ataque, defesa, pos_x, pos_y){}
+Inimigo::Inimigo(int vida, int ataque, int defesa): Personagem(vida, ataque, defesa){}
 
 Inimigo::~Inimigo(){}
 

@@ -8,8 +8,7 @@ private:
     int itens[5];
 
 public:
-    // CRIADOR E DESTRUTOR
-    Jogador(int vida, int ataque, int defesa, int pos_x, int pos_y);
+    Jogador(int vida, int ataque, int defesa);
     ~Jogador();
 
     void ataqueNormal() override;
