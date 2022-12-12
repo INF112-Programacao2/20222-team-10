@@ -1,5 +1,4 @@
 #include "Personagem.h"
-#include "Espada.h"
 
 #ifndef JOGADOR_H
 #define JOGADOR_H

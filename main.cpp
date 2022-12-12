@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Jogador.h"
 #include "Inimigo.h"
-#include "Espada.h"
 #include "Controlador.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
@@ -22,11 +21,12 @@ int main(){
     ALLEGRO_TIMER *timer = nullptr;
 
     bool teclas[] = {false, false, false, false, false, false, false};
+    int ultima_posicao;
     bool fim = false;
     bool desenha = true;
 
+    
     Jogador jogador(100, 2, 2, 100, 100);
-    Espada espada(jogador.getPosX()+16, jogador.getPosY());
 
     // INICIALIZAÇÃO ALLEGRO E DISPLAY
     ALLEGRO_DISPLAY *display = nullptr;
@@ -72,15 +72,19 @@ int main(){
                 break;
             case ALLEGRO_KEY_UP:
                 teclas[CIMA] = true;
+                ultima_posicao = CIMA;
                 break;
             case ALLEGRO_KEY_DOWN:
                 teclas[BAIXO] = true;
+                ultima_posicao = BAIXO;
                 break;
             case ALLEGRO_KEY_LEFT:
                 teclas[ESQUERDA] = true;
+                ultima_posicao = ESQUERDA;
                 break;
             case ALLEGRO_KEY_RIGHT:
                 teclas[DIREITA] = true;
+                ultima_posicao = DIREITA;
                 break;
             case ALLEGRO_KEY_A:
                 teclas[A] = true;
@@ -153,9 +157,6 @@ int main(){
                     jogador.setPosX(LARGURA_TELA - 15);
                 }
             }
-            if(teclas[A]){ 
-                al_draw_filled_rectangle(espada.getPosX()-5, espada.getPosY(), espada.getPosX()+30, espada.getPosY()+5, al_map_rgb(128, 0, 0));
-            }
         }
 
         // DESENHO
@@ -163,6 +164,24 @@ int main(){
             desenha = false;
 
             al_draw_filled_rectangle(jogador.getPosX()-15, jogador.getPosY()-15, jogador.getPosX()+15, jogador.getPosY()+15, al_map_rgb(0, 128, 0));
+
+            // DESENHANDO ESPADA
+            if(teclas[A]){
+                switch(ultima_posicao){
+                case CIMA:
+                    al_draw_filled_rectangle(jogador.getPosX()-5, jogador.getPosY()-16, jogador.getPosX()+5, jogador.getPosY()-46, al_map_rgb(128, 0, 0));
+                    break;
+                case BAIXO:
+                    al_draw_filled_rectangle(jogador.getPosX()-5, jogador.getPosY()+16, jogador.getPosX()+5, jogador.getPosY()+46, al_map_rgb(128, 0, 0));
+                    break;
+                case ESQUERDA:
+                    al_draw_filled_rectangle(jogador.getPosX()-16, jogador.getPosY()+5, jogador.getPosX()-46, jogador.getPosY()-5, al_map_rgb(128, 0, 0));
+                    break;
+                case DIREITA:
+                    al_draw_filled_rectangle(jogador.getPosX()+16, jogador.getPosY()+5, jogador.getPosX()+46, jogador.getPosY()-5, al_map_rgb(128, 0, 0));
+                    break;
+                }
+            }
 
             al_flip_display();
             al_clear_to_color(al_map_rgb(0, 0, 0));
