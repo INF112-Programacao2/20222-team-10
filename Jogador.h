@@ -1,4 +1,5 @@
 #include "Personagem.h"
+#include "Espada.h"
 
 #ifndef JOGADOR_H
 #define JOGADOR_H
@@ -8,6 +9,7 @@ private:
     int itens[5];
 
 public:
+    // CRIADOR E DESTRUTOR
     Jogador(int vida, int ataque, int defesa, int pos_x, int pos_y);
     ~Jogador();
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Jogador.h"
 #include "Inimigo.h"
+#include "Espada.h"
 #include "Controlador.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
@@ -8,8 +9,8 @@
 #include <allegro5/allegro_image.h>
 
 // VARIÁVEIS GLOBAIS
-const int largura_tela = 640;
-const int altura_tela = 480;
+const int LARGURA_TELA = 1280;
+const int ALTURA_TELA = 720;
 const int FPS = 60;
 
 enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, A, S, D};
@@ -25,6 +26,7 @@ int main(){
     bool desenha = true;
 
     Jogador jogador(100, 2, 2, 100, 100);
+    Espada espada(jogador.getPosX()+16, jogador.getPosY());
 
     // INICIALIZAÇÃO ALLEGRO E DISPLAY
     ALLEGRO_DISPLAY *display = nullptr;
@@ -34,7 +36,7 @@ int main(){
         return -1;
     }
 
-    display = al_create_display(largura_tela, altura_tela);
+    display = al_create_display(LARGURA_TELA, ALTURA_TELA);
 
     if(!display){
         std::cout << "Erro ao criar display." << std::endl;
@@ -126,22 +128,40 @@ int main(){
         else if(ev.type == ALLEGRO_EVENT_TIMER){
             desenha = true;
 
+            // 15 é a "largura" do quadrado
             if(teclas[CIMA]){
                 jogador.movimentaCima();
+                if(jogador.getPosY() < 15){
+                    jogador.setPosY(15);
+                }
             }
             if(teclas[BAIXO]){
                 jogador.movimentaBaixo();
+                if(jogador.getPosY() > ALTURA_TELA - 15){
+                    jogador.setPosY(ALTURA_TELA - 15);
+                }
             }
             if(teclas[ESQUERDA]){
                 jogador.movimentaEsquerda();
+                if(jogador.getPosX() < 15){
+                    jogador.setPosX(15);
+                }
             }
             if(teclas[DIREITA]){
                 jogador.movimentaDireita();
+                if(jogador.getPosX() > LARGURA_TELA - 15){
+                    jogador.setPosX(LARGURA_TELA - 15);
+                }
+            }
+            if(teclas[A]){ 
+                al_draw_filled_rectangle(espada.getPosX()-5, espada.getPosY(), espada.getPosX()+30, espada.getPosY()+5, al_map_rgb(128, 0, 0));
             }
         }
 
         // DESENHO
         if(desenha && al_is_event_queue_empty(fila_eventos)){
+            desenha = false;
+
             al_draw_filled_rectangle(jogador.getPosX()-15, jogador.getPosY()-15, jogador.getPosX()+15, jogador.getPosY()+15, al_map_rgb(0, 128, 0));
 
             al_flip_display();

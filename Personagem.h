@@ -11,11 +11,11 @@ protected:
     int const _velocidade = 7;
     int _pos_x;
     int _pos_y;
-    int const _borda_x = 15;
-    int const _borda_y = 15;
+    int _borda_x;
+    int _borda_y;
 
 public:
-    // CRIADOR E DESTRUIDOR
+    // CRIADOR E DESTRUTOR
     Personagem(int vida, int ataque, int defesa, int pos_x, int pos_y);
     ~Personagem();
 

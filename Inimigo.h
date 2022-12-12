@@ -6,6 +6,7 @@
 class Inimigo: public Personagem{
 private:
 public:
+    // CRIADOR E DESTRUTOR
     Inimigo(int vida, int ataque, int defesa, int pos_x, int pos_y);
     ~Inimigo();
 
