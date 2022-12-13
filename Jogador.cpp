@@ -26,20 +26,39 @@ void Jogador::movimentaDireita(){
     this->setPosX(this->getPosX() + getVelocidade());
 }
 
-void Jogador::colisaoAtaque1(Inimigo inimigo){
-    if(this->getPosX() + this->getBordaX() > inimigo.getPosX()-(3*inimigo.getBordaX()) &&
-    this->getPosX() - this->getBordaX() < inimigo.getPosX()+(3*inimigo.getBordaX()) &&
-    this->getPosY() + this->getBordaY() > inimigo.getPosY()-(3*inimigo.getBordaY()) &&
-    this->getPosY() - this->getBordaY() < inimigo.getPosY()+(3*inimigo.getBordaY())){
-        this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
-        std::cout << this->getVida() << std::endl;
-    }
+void Jogador::colisaoReceberDano(Inimigo inimigo, int qualAtaque){
+    //if(qualAtaque == 0){
+        if(this->getPosX() + this->getBordaX() > inimigo.getPosX()-(3*inimigo.getBordaX()) &&
+        this->getPosX() - this->getBordaX() < inimigo.getPosX()+(3*inimigo.getBordaX()) &&
+        this->getPosY() + this->getBordaY() > inimigo.getPosY()-(3*inimigo.getBordaY()) &&
+        this->getPosY() - this->getBordaY() < inimigo.getPosY()+(3*inimigo.getBordaY())){
+            this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
+            std::cout << this->getVida() << std::endl;
+        }
+    /*}
+    else if(qualAtaque == 1){
+        if(this->getPosY() - this->getBordaY() < inimigo.getPosY() + inimigo.getBordaY() &&
+        this->getPosY() + this->getBordaY() > inimigo.getPosY() - inimigo.getBordaY()){
+            this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
+            std::cout << this->getVida() << std::endl;
+        }
+    }*/
+    
 }
 
-void Jogador::colisaoAtaque2(Inimigo inimigo){
-    if(this->getPosY() - this->getBordaY() < inimigo.getPosY() + inimigo.getBordaY() &&
-    this->getPosY() + this->getBordaY() > inimigo.getPosY() - inimigo.getBordaY()){
-        this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
-        std::cout << this->getVida() << std::endl;
+void Jogador::ataque(Espada espada, int ultima_posicao){
+    switch(ultima_posicao){
+    case 0:
+        al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()-espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
+        break;
+    case 1:
+        al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()+espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
+        break;
+    case 2:
+        al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()-espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
+        break;
+    case 3:
+        al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()+espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
+        break;
     }
 }

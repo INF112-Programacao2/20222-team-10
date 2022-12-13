@@ -33,6 +33,7 @@ int main(){
     //bool game_over = false;
     bool desenha = true;
     
+    Controlador controlador;
     Jogador jogador(100, 2, 2, 100, 100, 10);
     Espada espada(3, 30);
     Inimigo *inimigos;
@@ -177,7 +178,7 @@ int main(){
             }
 
             if(espada.getAtivo()){
-                espada.colisaoEspada(inimigos[1], jogador, ultima_posicao);
+                controlador.colisaoDarDano(espada, inimigos[1], jogador, ultima_posicao);
             }
 
             if(al_get_timer_count(timer) / contador == 150){
@@ -197,35 +198,27 @@ int main(){
             desenha = false;
 
             if(inimigos[1].getAtacar()){
-                switch (rand() % 2)
-                {
-                case 0:
-                    inimigos[1].desenhaAtaque1();
-                    jogador.colisaoAtaque1(inimigos[1]);
-                    break;
-
-                case 1:
-                    inimigos[1].desenhaAtaque2();
-                    jogador.colisaoAtaque2(inimigos[1]);
-                    break;
-                }
+                int temp = rand() % 2;
+                
+                inimigos[1].ataque(espada, 0);
+                jogador.colisaoReceberDano(inimigos[1], temp);
                 
                 inimigos[1].setAtacar(false);
                 contador++;
-                }            
+            }            
 
-                al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
+            al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
 
-                al_draw_filled_rectangle(inimigo1.getPosX()-inimigo1.getBordaX(), inimigo1.getPosY()-inimigo1.getBordaY(), inimigo1.getPosX()+inimigo1.getBordaX(), inimigo1.getPosY()+inimigo1.getBordaY(), al_map_rgb(0, 0, 128));
+            al_draw_filled_rectangle(inimigo1.getPosX()-inimigo1.getBordaX(), inimigo1.getPosY()-inimigo1.getBordaY(), inimigo1.getPosX()+inimigo1.getBordaX(), inimigo1.getPosY()+inimigo1.getBordaY(), al_map_rgb(0, 0, 128));
 
-                // DESENHANDO ESPADA
-                if(espada.getAtivo()){
-                    espada.desenhaEspada(ultima_posicao);
-                    espada.setAtivo(false);
-                }
+            // DESENHANDO ESPADA
+            if(espada.getAtivo()){
+                jogador.ataque(espada, ultima_posicao);
+                espada.setAtivo(false);
+            }
 
-                // VIDAS E INFORMAÇÕES
-                //al_draw_text(font14, al_map_rgb(255, 255, 255), 0, 0, 0, "VIDA: %d ");
+            // VIDAS E INFORMAÇÕES
+            //al_draw_text(font14, al_map_rgb(255, 255, 255), 0, 0, 0, "VIDA: %d ");
 
             //if(!game_over){}
             /*else{

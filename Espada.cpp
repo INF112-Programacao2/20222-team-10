@@ -1,7 +1,4 @@
 #include "Espada.h"
-#include "Inimigo.h"
-#include "Jogador.h"
-#include <iostream>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
@@ -44,7 +41,7 @@ void Espada::setAtivo(bool newBool){
     _ativo = newBool;
 }
 
-void Espada::desenhaEspada(int ultima_posicao){
+/*void Espada::desenhaEspada(int ultima_posicao){
     switch(ultima_posicao){
     case 0:
         al_draw_filled_rectangle(this->getPosX()-this->getBordaBase(), this->getPosY(), this->getPosX()+this->getBordaBase(), this->getPosY()-this->getBordaTamanho(), al_map_rgb(128, 0, 0));
@@ -59,9 +56,9 @@ void Espada::desenhaEspada(int ultima_posicao){
         al_draw_filled_rectangle(this->getPosX(), this->getPosY()+this->getBordaBase(), this->getPosX()+this->getBordaTamanho(), this->getPosY()-this->getBordaBase(), al_map_rgb(128, 0, 0));
         break;
     }
-}
+}*/
 
-void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao){
+/*void Espada::colisao(Inimigo &inimigo, Jogador jogador, int ultima_posicao){
     switch(ultima_posicao){
     case 0:     // CIMA
         if((this->getPosY() - this->getBordaTamanho()) < (inimigo.getPosY() + inimigo.getBordaY()) && 
@@ -100,4 +97,4 @@ void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao
         }
         break;
     }
-}
+}*/

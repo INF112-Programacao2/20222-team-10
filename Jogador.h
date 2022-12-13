@@ -1,4 +1,5 @@
 #include "Personagem.h"
+#include "Espada.h"
 #include "Inimigo.h"
 
 #ifndef JOGADOR_H
@@ -21,8 +22,8 @@ public:
     void movimentaBaixo();
     void movimentaEsquerda();
     void movimentaDireita();
-    void colisaoAtaque1(Inimigo inimigo);
-    void colisaoAtaque2(Inimigo inimigo);
+    void colisaoReceberDano(Inimigo inimigo, int qualAtaque);
+    void ataque(Espada espada, int ultima_posicao) override;
 };
 
 #endif

@@ -1,3 +1,7 @@
+#include "Jogador.h"
+#include "Inimigo.h"
+#include "Espada.h"
+
 #ifndef CONTROLADOR_H
 #define CONTROLADOR_H
 
@@ -12,6 +16,7 @@ public:
     ~Controlador();
 
     void escolherMapa();
+    void colisaoDarDano(Espada espada, Inimigo &inimigo, Jogador jogador, int ultima_posicao);
 };
 
 #endif

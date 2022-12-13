@@ -1,3 +1,5 @@
+#include "Espada.h"
+
 #ifndef PERSONAGEM_H
 #define PERSONAGEM_H
 
@@ -37,6 +39,7 @@ public:
     void setPosY(int newY);
 
     // MÉTODOS
+    void virtual ataque(Espada espada, int ultima_posicao) = 0;
 };
 
 #endif

@@ -1,5 +1,3 @@
-#include "Inimigo.h"
-#include "Jogador.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
@@ -32,8 +30,8 @@ public:
     void setAtivo(bool newBool);
 
     // MÉTODOS
-    void desenhaEspada(int ultima_posicao);
-    void colisaoEspada(Inimigo &inimigo, Jogador jogador,int ultima_posicao);
+    //void desenhaEspada(int ultima_posicao);
+    //void colisao(Inimigo &inimigo, Jogador jogador, int ultima_posicao);
 };
 
 #endif

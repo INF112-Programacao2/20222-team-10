@@ -1,4 +1,5 @@
 #include "Personagem.h"
+#include "Espada.h"
 
 #ifndef INIMIGO_H
 #define INIMIGO_H
@@ -15,9 +16,9 @@ public:
 
     void setAtacar(bool newAtacar);
 
-    void virtual IA();
-    void desenhaAtaque1();
-    void desenhaAtaque2();
+    //void desenhaAtaque1();
+    //void desenhaAtaque2();
+    void ataque(Espada espada, int ultima_posicao) override;
 };
 
 #endif
