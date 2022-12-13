@@ -21,7 +21,8 @@ public:
     void movimentaBaixo();
     void movimentaEsquerda();
     void movimentaDireita();
-    void colisaoAtaque(Inimigo inimigo);
+    void colisaoAtaque1(Inimigo inimigo);
+    void colisaoAtaque2(Inimigo inimigo);
 };
 
 #endif

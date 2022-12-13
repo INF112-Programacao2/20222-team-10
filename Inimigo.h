@@ -16,7 +16,8 @@ public:
     void setAtacar(bool newAtacar);
 
     void virtual IA();
-    void desenhaAtaque();
+    void desenhaAtaque1();
+    void desenhaAtaque2();
 };
 
 #endif

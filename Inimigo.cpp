@@ -17,6 +17,10 @@ void Inimigo::setAtacar(bool newAtacar){
 
 void Inimigo::IA(){}
 
-void Inimigo::desenhaAtaque(){
-    al_draw_filled_rectangle(this->getPosX()-(2*this->getBordaX()), this->getPosY()-(2*this->getBordaY()), this->getPosX()+(2*this->getBordaX()), this->getPosY()+(2*this->getBordaY()), al_map_rgb(128, 64, 64));
+void Inimigo::desenhaAtaque1(){
+    al_draw_filled_rectangle(this->getPosX()-(3*this->getBordaX()), this->getPosY()-(3*this->getBordaY()), this->getPosX()+(2*this->getBordaX()), this->getPosY()+(3*this->getBordaY()), al_map_rgb(128, 64, 64));
+}
+
+void Inimigo::desenhaAtaque2(){
+    al_draw_filled_rectangle(this->getPosX() - this->getBordaX(), this->getPosY() - this->getBordaY(), getBordaX(), this->getPosY() + this->getBordaY(), al_map_rgb(128, 64, 64));
 }

@@ -26,11 +26,19 @@ void Jogador::movimentaDireita(){
     this->setPosX(this->getPosX() + getVelocidade());
 }
 
-void Jogador::colisaoAtaque(Inimigo inimigo){
-    if(this->getPosX() + this->getBordaX() > inimigo.getPosX()-(2*inimigo.getBordaX()) &&
-    this->getPosX() - this->getBordaX() < inimigo.getPosX()+(2*inimigo.getBordaX()) &&
-    this->getPosY() + this->getBordaY() > inimigo.getPosY()-(2*inimigo.getBordaY()) &&
-    this->getPosY() - this->getBordaY() < inimigo.getPosY()+(2*inimigo.getBordaY())){
+void Jogador::colisaoAtaque1(Inimigo inimigo){
+    if(this->getPosX() + this->getBordaX() > inimigo.getPosX()-(3*inimigo.getBordaX()) &&
+    this->getPosX() - this->getBordaX() < inimigo.getPosX()+(3*inimigo.getBordaX()) &&
+    this->getPosY() + this->getBordaY() > inimigo.getPosY()-(3*inimigo.getBordaY()) &&
+    this->getPosY() - this->getBordaY() < inimigo.getPosY()+(3*inimigo.getBordaY())){
+        this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
+        std::cout << this->getVida() << std::endl;
+    }
+}
+
+void Jogador::colisaoAtaque2(Inimigo inimigo){
+    if(this->getPosY() - this->getBordaY() < inimigo.getPosY() + inimigo.getBordaY() &&
+    this->getPosY() + this->getBordaY() > inimigo.getPosY() - inimigo.getBordaY()){
         this->setVida(this->getVida() - (inimigo.getAtaque() * 3) - this->getDefesa());
         std::cout << this->getVida() << std::endl;
     }

@@ -2,6 +2,8 @@
 #include "Inimigo.h"
 #include "Jogador.h"
 #include <iostream>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 
 Espada::Espada(int borda_base, int borda_tamanho){
     _borda_base = borda_base;
@@ -40,6 +42,23 @@ void Espada::setPosY(int newY){
 
 void Espada::setAtivo(bool newBool){
     _ativo = newBool;
+}
+
+void Espada::desenhaEspada(int ultima_posicao){
+    switch(ultima_posicao){
+    case 0:
+        al_draw_filled_rectangle(this->getPosX()-this->getBordaBase(), this->getPosY(), this->getPosX()+this->getBordaBase(), this->getPosY()-this->getBordaTamanho(), al_map_rgb(128, 0, 0));
+        break;
+    case 1:
+        al_draw_filled_rectangle(this->getPosX()-this->getBordaBase(), this->getPosY(), this->getPosX()+this->getBordaBase(), this->getPosY()+this->getBordaTamanho(), al_map_rgb(128, 0, 0));
+        break;
+    case 2:
+        al_draw_filled_rectangle(this->getPosX(), this->getPosY()+this->getBordaBase(), this->getPosX()-this->getBordaTamanho(), this->getPosY()-this->getBordaBase(), al_map_rgb(128, 0, 0));
+        break;
+    case 3:
+        al_draw_filled_rectangle(this->getPosX(), this->getPosY()+this->getBordaBase(), this->getPosX()+this->getBordaTamanho(), this->getPosY()-this->getBordaBase(), al_map_rgb(128, 0, 0));
+        break;
+    }
 }
 
 void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao){

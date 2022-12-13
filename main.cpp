@@ -4,16 +4,19 @@
 #include "Espada.h"
 #include "Controlador.h"
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
+//#include <allegro5/allegro_font.h>
+//#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
+
+//void reinicializarObjetos(Jogador jogador, Inimigo *inimigos);
 
 // VARIÁVEIS GLOBAIS
 const int LARGURA_TELA = 500;
 const int ALTURA_TELA = 500;
 const int FPS = 40;
 
-enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, A};
+enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, C};
 
 int contador = 1;
 
@@ -22,10 +25,12 @@ int main(){
     // VARIÁVEIS
     ALLEGRO_EVENT_QUEUE *fila_eventos = nullptr;
     ALLEGRO_TIMER *timer = nullptr;
+    //ALLEGRO_FONT *font14 = nullptr;
 
     bool teclas[] = {false, false, false, false, false};
     int ultima_posicao;
     bool fim = false;
+    //bool game_over = false;
     bool desenha = true;
     
     Jogador jogador(100, 2, 2, 100, 100, 10);
@@ -45,7 +50,7 @@ int main(){
 
     if(!al_init()){
         //al_show_native_message_box(nullptr, nullptr, nullptr, "Erro ao iniciar o allegro.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-        std::cout << "Erro ao iniciar o allegro." << std::endl;
+        std::cout << "erro1" << std::endl;
         return -1;
     }
 
@@ -53,17 +58,20 @@ int main(){
 
     if(!display){
         //al_show_native_message_box(display, "Título Padrão", nullptr, "Erro ao criar o display.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-        std::cout << "Erro ao iniciar o display." << std::endl;
+        std::cout << "erro2" << std::endl;
         return -1;
     }
 
     // INICIALIZAÇÃO DE ADDONS E INSTALAÇÕES
     al_install_keyboard();
     al_init_primitives_addon();
+    //al_init_font_addon();
+    //al_init_ttf_addon();
 
     // CRIAÇÃO DA FILA E OUTROS DISPOSITIVOS
     fila_eventos = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
+    //font14 = al_load_font("arial.ttf", 14, 0);
 
     // REGISTRO DE SOURCES
     al_register_event_source(fila_eventos, al_get_keyboard_event_source());
@@ -86,30 +94,22 @@ int main(){
                 break;
             case ALLEGRO_KEY_UP:
                 teclas[CIMA] = true;
-                if(!teclas[BAIXO] || ultima_posicao == BAIXO){
-                    ultima_posicao = CIMA;
-                }
+                ultima_posicao = CIMA;
                 break;
             case ALLEGRO_KEY_DOWN:
                 teclas[BAIXO] = true;
-                if(!teclas[CIMA] || ultima_posicao == CIMA){
-                    ultima_posicao = BAIXO;
-                }
+                ultima_posicao = BAIXO;
                 break;
             case ALLEGRO_KEY_LEFT:
                 teclas[ESQUERDA] = true;
-                if(!teclas[DIREITA] || ultima_posicao == DIREITA){
-                    ultima_posicao = ESQUERDA;
-                }
+                ultima_posicao = ESQUERDA;
                 break;
             case ALLEGRO_KEY_RIGHT:
                 teclas[DIREITA] = true;
-                if(!teclas[ESQUERDA] || ultima_posicao == ESQUERDA){
-                    ultima_posicao = DIREITA;
-                }
+                ultima_posicao = DIREITA;
                 break;
-            case ALLEGRO_KEY_A:
-                teclas[A] = true;
+            case ALLEGRO_KEY_C:
+                teclas[C] = true;
                 espada.setAtivo(true);
                 break;
             }
@@ -129,8 +129,8 @@ int main(){
             case ALLEGRO_KEY_RIGHT:
                 teclas[DIREITA] = false;
                 break;
-            case ALLEGRO_KEY_A:
-                teclas[A] = false;
+            case ALLEGRO_KEY_C:
+                teclas[C] = false;
                 break;
             }
         }
@@ -175,47 +175,67 @@ int main(){
                 espada.setPosY(jogador.getPosY());
                 espada.setPosX(jogador.getPosX() + jogador.getBordaX());
             }
+
             if(espada.getAtivo()){
                 espada.colisaoEspada(inimigos[1], jogador, ultima_posicao);
             }
+
             if(al_get_timer_count(timer) / contador == 150){
             inimigos[1].setAtacar(true);
             }
+
+            if(jogador.getVida() <= 0){
+                break;
+                //game_over = true;
+            }
         }
+
+        //if(!game_over){
 
         // DESENHO
         if(desenha && al_is_event_queue_empty(fila_eventos)){
             desenha = false;
 
             if(inimigos[1].getAtacar()){
-                inimigos[1].desenhaAtaque();
-                jogador.colisaoAtaque(inimigos[1]);
-                inimigos[1].setAtacar(false);
-                contador++;
-            }            
-
-            al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
-
-            al_draw_filled_rectangle(inimigo1.getPosX()-inimigo1.getBordaX(), inimigo1.getPosY()-inimigo1.getBordaY(), inimigo1.getPosX()+inimigo1.getBordaX(), inimigo1.getPosY()+inimigo1.getBordaY(), al_map_rgb(0, 0, 128));
-
-            // DESENHANDO ESPADA
-            if(espada.getAtivo()){
-                switch(ultima_posicao){
-                case CIMA:
-                    al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()-espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
+                switch (rand() % 2)
+                {
+                case 0:
+                    inimigos[1].desenhaAtaque1();
+                    jogador.colisaoAtaque1(inimigos[1]);
                     break;
-                case BAIXO:
-                    al_draw_filled_rectangle(espada.getPosX()-espada.getBordaBase(), espada.getPosY(), espada.getPosX()+espada.getBordaBase(), espada.getPosY()+espada.getBordaTamanho(), al_map_rgb(128, 0, 0));
-                    break;
-                case ESQUERDA:
-                    al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()-espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
-                    break;
-                case DIREITA:
-                    al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()+espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
+
+                case 1:
+                    inimigos[1].desenhaAtaque2();
+                    jogador.colisaoAtaque2(inimigos[1]);
                     break;
                 }
-                espada.setAtivo(false);
-            }
+                
+                inimigos[1].setAtacar(false);
+                contador++;
+                }            
+
+                al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
+
+                al_draw_filled_rectangle(inimigo1.getPosX()-inimigo1.getBordaX(), inimigo1.getPosY()-inimigo1.getBordaY(), inimigo1.getPosX()+inimigo1.getBordaX(), inimigo1.getPosY()+inimigo1.getBordaY(), al_map_rgb(0, 0, 128));
+
+                // DESENHANDO ESPADA
+                if(espada.getAtivo()){
+                    espada.desenhaEspada(ultima_posicao);
+                    espada.setAtivo(false);
+                }
+
+                // VIDAS E INFORMAÇÕES
+                //al_draw_text(font14, al_map_rgb(255, 255, 255), 0, 0, 0, "VIDA: %d ");
+
+            //if(!game_over){}
+            /*else{
+                al_draw_text(font14, al_map_rgb(255, 255, 255), ALTURA_TELA / 2, LARGURA_TELA / 2, ALLEGRO_ALIGN_CENTER, "VOCÊ MORREU. PRECIONE ESC PARA SAIR.");
+
+                if(teclas[ENTER]){
+                    reinicializarObjetos(jogador, inimigos);
+                    game_over = false;
+                }
+            }*/
 
             al_flip_display();
             al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -230,3 +250,13 @@ int main(){
 
     return 0;
 }
+
+/*void reinicializarObjetos(Jogador jogador, Inimigo *inimigos){
+    jogador.setVida(100);
+    jogador.setPosX(100);
+    jogador.setPosY(100);
+
+    inimigos[1].setVida(100);
+    //inimigos[2].setVida(200);
+    //inimigos[3].setVida(300);
+}*/

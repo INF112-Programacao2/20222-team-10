@@ -1,5 +1,8 @@
 #include "Inimigo.h"
 #include "Jogador.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 
 #ifndef ESPADA_H
 #define ESPADA_H
@@ -29,6 +32,7 @@ public:
     void setAtivo(bool newBool);
 
     // MÉTODOS
+    void desenhaEspada(int ultima_posicao);
     void colisaoEspada(Inimigo &inimigo, Jogador jogador,int ultima_posicao);
 };
 
