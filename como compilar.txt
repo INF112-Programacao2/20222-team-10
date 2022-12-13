@@ -1,0 +1,3 @@
+Para compilar o código use:
+
+"g++ main.cpp Personagem.cpp Jogador.cpp Espada.cpp Inimigo.cpp Controlador.cpp -lallegro -lallegro_primitives"
