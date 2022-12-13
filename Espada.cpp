@@ -49,7 +49,7 @@ void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao
         (this->getPosY() + this->getBordaTamanho()) > (inimigo.getPosY() - inimigo.getBordaY()) &&
         (this->getPosX() - this->getBordaBase()) < (inimigo.getPosX() + inimigo.getBordaX()) &&
         (this->getPosX() + this->getBordaBase()) > (inimigo.getPosX() - inimigo.getBordaX())){
-            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 10) - inimigo.getDefesa()));
+            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 5) - inimigo.getDefesa()));
             std::cout << inimigo.getVida() << std::endl;
         }
         break;
@@ -58,7 +58,7 @@ void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao
         (this->getPosY() - this->getBordaTamanho()) < (inimigo.getPosY() + inimigo.getBordaY()) &&
         (this->getPosX() + this->getBordaBase()) > (inimigo.getPosX() - inimigo.getBordaX()) &&
         (this->getPosX() - this->getBordaBase()) < (inimigo.getPosX() + inimigo.getBordaX())){
-            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 10) - inimigo.getDefesa()));
+            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 5) - inimigo.getDefesa()));
             std::cout << inimigo.getVida() << std::endl;
         }
         break;
@@ -67,7 +67,7 @@ void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao
         (this->getPosX() + this->getBordaTamanho()) > (inimigo.getPosX() - inimigo.getBordaX()) &&
         (this->getPosY() - this->getBordaBase()) < (inimigo.getPosY() + inimigo.getBordaY()) &&
         (this->getPosY() + this->getBordaBase()) > (inimigo.getPosY() - inimigo.getBordaY())){
-            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 10) - inimigo.getDefesa()));
+            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 5) - inimigo.getDefesa()));
             std::cout << inimigo.getVida() << std::endl;
         }
         break;
@@ -76,7 +76,7 @@ void Espada::colisaoEspada(Inimigo &inimigo, Jogador jogador, int ultima_posicao
         (this->getPosX() - this->getBordaTamanho()) < (inimigo.getPosX() + inimigo.getBordaX()) &&
         (this->getPosY() + this->getBordaBase()) > (inimigo.getPosY() - inimigo.getBordaY()) &&
         (this->getPosY() - this->getBordaBase()) < (inimigo.getPosY() + inimigo.getBordaY())){
-            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 10) - inimigo.getDefesa()));
+            inimigo.setVida(inimigo.getVida() - ((jogador.getAtaque() * 5) - inimigo.getDefesa()));
             std::cout << inimigo.getVida() << std::endl;
         }
         break;

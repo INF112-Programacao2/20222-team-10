@@ -1,4 +1,5 @@
 #include "Personagem.h"
+#include "Inimigo.h"
 
 #ifndef JOGADOR_H
 #define JOGADOR_H
@@ -16,14 +17,11 @@ public:
 
     int getVelocidade();
 
-    void ataqueNormal() override;
-    void ataqueForte() override;
-    void defender() override;
-
     void movimentaCima();
     void movimentaBaixo();
     void movimentaEsquerda();
     void movimentaDireita();
+    void colisaoAtaque(Inimigo inimigo);
 };
 
 #endif

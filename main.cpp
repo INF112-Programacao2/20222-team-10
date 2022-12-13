@@ -11,9 +11,11 @@
 // VARIÁVEIS GLOBAIS
 const int LARGURA_TELA = 500;
 const int ALTURA_TELA = 500;
-const int FPS = 60;
+const int FPS = 40;
 
-enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, A, S, D};
+enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, A};
+
+int contador = 1;
 
 int main(){
 
@@ -21,31 +23,37 @@ int main(){
     ALLEGRO_EVENT_QUEUE *fila_eventos = nullptr;
     ALLEGRO_TIMER *timer = nullptr;
 
-    bool teclas[] = {false, false, false, false, false, false, false};
+    bool teclas[] = {false, false, false, false, false};
     int ultima_posicao;
     bool fim = false;
     bool desenha = true;
-
     
-    Jogador jogador(100, 2, 2, 100, 100, 15);
-    Espada espada(5, 30);
+    Jogador jogador(100, 2, 2, 100, 100, 10);
+    Espada espada(3, 30);
     Inimigo *inimigos;
-    Inimigo inimigo1(100, 1, 1, LARGURA_TELA/2, ALTURA_TELA/2, 50);
+
+    Inimigo inimigo1(100, 1, 1, LARGURA_TELA - 25, ALTURA_TELA/2, 25);
+    //Inimigo inimigo2(200, 2, 2, LARGURA_TELA/2 - 50, ALTURA_TELA/2, 50);
+    //Inimigo inimigo3(300, 3, 3, LARGURA_TELA/2 - 75, ALTURA_TELA/2, 75);
 
     inimigos[1] = inimigo1;
+    //inimigos[2] = inimigo2;
+    //inimigos[3] = inimigo3;
 
     // INICIALIZAÇÃO ALLEGRO E DISPLAY
     ALLEGRO_DISPLAY *display = nullptr;
 
     if(!al_init()){
-        std::cout << "Erro ao inicializar o allegro." << std::endl;
+        //al_show_native_message_box(nullptr, nullptr, nullptr, "Erro ao iniciar o allegro.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+        std::cout << "Erro ao iniciar o allegro." << std::endl;
         return -1;
     }
 
     display = al_create_display(LARGURA_TELA, ALTURA_TELA);
 
     if(!display){
-        std::cout << "Erro ao criar display." << std::endl;
+        //al_show_native_message_box(display, "Título Padrão", nullptr, "Erro ao criar o display.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+        std::cout << "Erro ao iniciar o display." << std::endl;
         return -1;
     }
 
@@ -78,38 +86,30 @@ int main(){
                 break;
             case ALLEGRO_KEY_UP:
                 teclas[CIMA] = true;
-                if(!teclas[BAIXO]){
+                if(!teclas[BAIXO] || ultima_posicao == BAIXO){
                     ultima_posicao = CIMA;
                 }
                 break;
             case ALLEGRO_KEY_DOWN:
                 teclas[BAIXO] = true;
-                if(!teclas[CIMA]){
+                if(!teclas[CIMA] || ultima_posicao == CIMA){
                     ultima_posicao = BAIXO;
                 }
                 break;
             case ALLEGRO_KEY_LEFT:
                 teclas[ESQUERDA] = true;
-                if(!teclas[DIREITA]){
+                if(!teclas[DIREITA] || ultima_posicao == DIREITA){
                     ultima_posicao = ESQUERDA;
                 }
                 break;
             case ALLEGRO_KEY_RIGHT:
                 teclas[DIREITA] = true;
-                if(!teclas[ESQUERDA]){
+                if(!teclas[ESQUERDA] || ultima_posicao == ESQUERDA){
                     ultima_posicao = DIREITA;
                 }
                 break;
             case ALLEGRO_KEY_A:
                 teclas[A] = true;
-                espada.setAtivo(true);
-                break;
-            case ALLEGRO_KEY_S:
-                teclas[S] = true;
-                espada.setAtivo(true);
-                break;
-            case ALLEGRO_KEY_D:
-                teclas[D] = true;
                 espada.setAtivo(true);
                 break;
             }
@@ -132,12 +132,6 @@ int main(){
             case ALLEGRO_KEY_A:
                 teclas[A] = false;
                 break;
-            case ALLEGRO_KEY_S:
-                teclas[S] = false;
-                break;
-            case ALLEGRO_KEY_D:
-                teclas[D] = false;
-                break;
             }
         }
 
@@ -149,7 +143,6 @@ int main(){
         else if(ev.type == ALLEGRO_EVENT_TIMER){
             desenha = true;
 
-            // 15 é a "largura" do quadrado
             if(teclas[CIMA]){
                 jogador.movimentaCima();
                 if(jogador.getPosY() < jogador.getBordaY()){
@@ -185,11 +178,21 @@ int main(){
             if(espada.getAtivo()){
                 espada.colisaoEspada(inimigos[1], jogador, ultima_posicao);
             }
+            if(al_get_timer_count(timer) / contador == 150){
+            inimigos[1].setAtacar(true);
+            }
         }
 
         // DESENHO
         if(desenha && al_is_event_queue_empty(fila_eventos)){
             desenha = false;
+
+            if(inimigos[1].getAtacar()){
+                inimigos[1].desenhaAtaque();
+                jogador.colisaoAtaque(inimigos[1]);
+                inimigos[1].setAtacar(false);
+                contador++;
+            }            
 
             al_draw_filled_rectangle(jogador.getPosX()-jogador.getBordaX(), jogador.getPosY()-jogador.getBordaY(), jogador.getPosX()+jogador.getBordaX(), jogador.getPosY()+jogador.getBordaY(), al_map_rgb(0, 128, 0));
 
@@ -211,7 +214,6 @@ int main(){
                     al_draw_filled_rectangle(espada.getPosX(), espada.getPosY()+espada.getBordaBase(), espada.getPosX()+espada.getBordaTamanho(), espada.getPosY()-espada.getBordaBase(), al_map_rgb(128, 0, 0));
                     break;
                 }
-
                 espada.setAtivo(false);
             }
 

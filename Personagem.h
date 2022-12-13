@@ -37,9 +37,6 @@ public:
     void setPosY(int newY);
 
     // MÉTODOS
-    void virtual ataqueNormal() = 0;
-    void virtual ataqueForte() = 0;
-    void virtual defender() = 0;
 };
 
 #endif
