@@ -17,6 +17,7 @@ public:
     int getVida();
     int getAtaque();
     int getDefesa();
+    int setVida(int vida);
 
     // MÉTODOS
     void virtual ataqueNormal() = 0;

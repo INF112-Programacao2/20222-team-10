@@ -34,15 +34,15 @@ int main() {
 
     // VARIÁVEIS
        
-    Controlador overlord;
+    Controlador overlord;               //Estanciação do controlador
     //overlord.Controlador();
-    // Jogador player;
+    //Jogador player(100,10,10);
     
-    const int largura_tela = 500;
+    const int largura_tela = 500;       //Tela 500x500 pixels
     const int altura_tela = 500;
 
-    int pos_x = 20;
-    int pos_y = 20;
+    int pos_x = 40;
+    int pos_y = 40;
     bool teclas[] = {false, false, false, false};
 
     bool fim = false;
@@ -147,7 +147,7 @@ int main() {
             fim = true;
         }
 
-        if(overlord._cont==1) {
+        if(overlord.getContador()==1) {                                     //Movimentação e colisão primeiro mapa
         if(overlord.Mapa1[pos_x/20][(pos_y/20)-1]!='1') 
             pos_y -= teclas[CIMA] * 20;
 
@@ -161,7 +161,7 @@ int main() {
             pos_x += teclas[DIREITA] * 20;
         }
 
-        if(overlord._cont==2) {
+        if(overlord.getContador()==2) {                                      //Movimentação e colisão segundo mapa
         if(overlord.Mapa2[pos_x/20][(pos_y/20)-1]=='0') 
             pos_y -= teclas[CIMA] * 20;
 
@@ -175,15 +175,29 @@ int main() {
             pos_x += teclas[DIREITA] * 20;
         }
 
-       // if(overlord._cont==3) {
-        //    if(overlord.mapa1[pos_x/20][pos_y/20]==2)
-         //       player.setVida(getVida()-1);
-       // }
+        if(overlord.getContador()==3) {
+            if(overlord.Mapa3[pos_x/20][(pos_y/20)-1]!='1') 
+            pos_y -= teclas[CIMA] * 20;
+
+            if(overlord.Mapa3[pos_x/20][(pos_y/20)]!='1')
+            pos_y += teclas[BAIXO] * 20;
+
+        if((pos_x>20)&&(overlord.Mapa3[(pos_x/20)-1][(pos_y/20)]!='2'&&'0'))
+            pos_x -= teclas[ESQUERDA] * 20;
+
+        if((pos_x<460)&&(overlord.Mapa3[(pos_x/20)][(pos_y/20)]!='2'&&'0'))
+            pos_x += teclas[DIREITA] * 20;
+        }
+
+        /*if(overlord.getContador()==3) {
+            if(overlord.Mapa3[pos_x/20][pos_y/20]=='3')
+                player.setVida(player.getVida()-1);
+        }*/
             
 
         // DESENHO
        // if(overlord.escolherMapa(int vidaInimigo)=='1')
-            mapa = al_load_bitmap("map2.bmp");
+            mapa = al_load_bitmap("map3.bmp");
         //if(overlord.escolherMapa(int vidaInimigo)=='2')
          //   mapa = al_load_bitmap("map2.bmp");
        // if(overlord.escolherMapa(int vidaInimigo)=='3')

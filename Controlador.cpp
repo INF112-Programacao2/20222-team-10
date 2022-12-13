@@ -1,12 +1,8 @@
 #include "Controlador.h"
 
-//Controlador::Controlador() {
-    
-   
-//}
-   
-
-//Controlador::~Controlador(){}
+int Controlador::getContador() {
+    return _cont;
+}
 
 //char Controlador::escolherMapa() {
    // if(vidaInimigo<=0)

@@ -19,3 +19,7 @@ int Personagem::getDefesa(){
 int Personagem::getVida(){
     return _vida;
 }
+
+int Personagem::setVida(int vida){
+    _vida=vida;
+}
